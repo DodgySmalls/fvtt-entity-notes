@@ -6,9 +6,9 @@
 	"author": "Marten Wiebe",
 	"scripts": ["./entity-notes-extended.js"],
 	"styles": ["./entity-notes-extended.css"],
-    "url": "https://github.com/DodgySmalls/fvtt-entity-notes-extended",
-    "manifest": "https://github.com/DodgySmalls/fvtt-entity-notes-extended/master/module.json",
-    "download": "https://github.com/DodgySmalls/fvtt-entity-notes-extended/archive/master.zip",
+    "url": "https://github.com/DodgySmalls/fvtt-entity-notes",
+    "manifest": "https://github.com/DodgySmalls/fvtt-entity-notes/master/module.json",
+    "download": "https://github.com/DodgySmalls/fvtt-entity-notes/archive/master.zip",
     "languages": [
         {
           "lang": "en",
