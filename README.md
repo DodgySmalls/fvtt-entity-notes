@@ -1,8 +1,12 @@
-# Entity Notes (Extended)
+# Entity Notes
 
-...
+Entity notes is a simple privilege based note system for Foundry Virtual TableTop. It allows players to store their notes within the foundry system, and for those notes to remain private from each other.
 
-Forked from Felix Muller's GM Notes module, licensing and description incoming
+At present, GMs can see notes of all players. In future iterations, this will be adjusted to offer privilege settings to more accurately partition information.
+
+Why use entity notes?
+
+This shared note-taking method allows a GM to best tune the experience of the players to their perceptions, as well making it easy to track how and when players have encountered items, NPCs, or lore.
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
