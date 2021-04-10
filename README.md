@@ -8,6 +8,12 @@ Why use entity notes?
 
 This shared note-taking method allows a GM to best tune the experience of the players to their perceptions, as well making it easy to track how and when players have encountered items, NPCs, or lore.
 
+# Dev Info
+
+* HTML in FoundryVTT templates is parsed by [handlebars.js](https://handlebarsjs.com/guide/)
+* The {{editor}} helper is a wrapper around a [TinyMCE](https://www.tiny.cloud/docs/) editor
+* The first element in a [FormApplication](https://foundryvtt.com/api/FormApplication.html#isEditable) template file *must* be a form element (which also excludes comments)
+
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
 <br />
