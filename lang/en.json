@@ -1,7 +1,5 @@
 {
-    "GMNote.label":"GM Notes",
-    "GMNote.setting":"Show full GM Note Label",
-    "GMNote.settingHint":"If checked only the icon will apear.",
-    "GMNote.moveToDescription":"Move GM Notes to Description",
-    "GMNote.moveToNote":"Move Description to GM Notes"
+    "PrivilegedNote.label":"Notes",
+    "PrivilegedNote.setting":"Show full GM Note Label",
+    "PrivilegedNote.settingHint":"If checked only the icon will apear."
 }

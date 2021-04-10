@@ -4,50 +4,52 @@ class PrivilegedNote extends FormApplication {
         super(object, options);
 
         this.entity.apps[this.appId] = this;
+
+        console.log(this.entity);
     }
 
     get entity() {
         return this.object;
     }
 
-    get showExtraButtons() {
-        return (game.dnd5e && this.entity.constructor.name !== 'RollTable');
-    }
-
     static get defaultOptions() {
+
         const options = super.defaultOptions;
-        options.template = "modules/entity-notes-extended/templates.html";
+        options.template = "modules/entity-notes-extended/gm-template.html";
         options.width = '600';
         options.height = '700';
         options.classes = ['entity-notes-extended', 'sheet'];
         options.title = game.i18n.localize('PrivilegedNote.label');
         options.resizable = true;
         options.editable = true;
+
+        console.log(options);
+
         return options;
     }
 
     getData() {
         const data = super.getData();
 
-        data.notes = this.entity.getFlag('entity-notes-extended', 'notes');
+        data.notes = this.entity.getFlag('entity-notes-extended', 'content');
         data.flags = this.entity.data.flags;
         data.owner = game.user.id;
         data.isGM = game.user.isGM;
-        data.showExtraButtons = this.showExtraButtons;
+
+        console.log(data);
 
         return data;
     }
 
     activateListeners(html) {
         super.activateListeners(html);
-
-        html.find('.moveToNote').click(ev => this._moveToNotes());
-        html.find('.moveToDescription').click(ev => this._moveToDescription());
     }
     
     async _updateObject(event, formData) {
+        console.log(event);
+        console.log(formData);
         if (game.user.isGM) {
-            await this.entity.setFlag('entity-notes-extended', 'notes', formData["flags.entity-notes-extended.notes"]);
+            await this.entity.setFlag('entity-notes-extended', 'content', formData["flags.entity-notes-extended.content"]);
             this.render();
         } else {
             ui.notifications.error("You have to be GM to edit GM Notes.");
@@ -55,78 +57,33 @@ class PrivilegedNote extends FormApplication {
     }
 
     static _initEntityHook(app, html, data) {
-        if (game.user.isGM) {
-            let labelTxt = '';
-            let title = game.i18n.localize('PrivilegedNote.label'); 
-            if (game.settings.get('entity-notes-extended', 'showLabel')) {
-                labelTxt = ' ' + title;
-            }
-            let notes = app.entity.getFlag('entity-notes-extended', 'notes');
-            let openBtn = $(`<a class="open-gm-note" title="${title}"><i class="fas fa-clipboard${notes ? '-check':''}"></i>${labelTxt}</a>`);
-            openBtn.click(ev => {
-                let noteApp = null;
-                for (let key in app.entity.apps) {
-                    let obj = app.entity.apps[key];
-                    if (obj instanceof PrivilegedNote) {
-                        noteApp = obj;
-                        break;
-                    }
+        //if (game.user.isGM) {
+        let labelText = '';
+        let title = game.i18n.localize('PrivilegedNote.label'); 
+        if (game.settings.get('entity-notes-extended', 'showLabel')) {
+            labelText = ' ' + title;
+        }
+        let content = app.entity.getFlag('entity-notes-extended', 'content');
+        let openBtn = $(`<a class="open-entity-notes" title="${title}"><i class="fas fa-clipboard${content ? '-check':''}"></i>${labelText}</a>`);
+        openBtn.click(ev => {
+            let noteApp = null;
+            for (let key in app.entity.apps) {
+                let obj = app.entity.apps[key];
+                if (obj instanceof PrivilegedNote) {
+                    noteApp = obj;
+                    break;
                 }
-                if (!noteApp) noteApp = new PrivilegedNote(app.entity, { submitOnClose: true, closeOnSubmit: false, submitOnUnfocus: true });
-                noteApp.render(true);
-            });
-            html.closest('.app').find('.open-gm-note').remove();
-            let titleElement = html.closest('.app').find('.window-title');
-            openBtn.insertAfter(titleElement);
-        }
-    }
-    
-    async _moveToNotes() {
-        if (game.dnd5e) {
-            let descPath = '';
-            switch (this.entity.constructor.name) {
-                case 'Actor5e': descPath = 'data.details.biography.value'; break;
-                case 'Item5e': descPath = 'data.description.value'; break;
-                case 'JournalEntry': descPath = 'content'; break;
             }
-            let description = getProperty(this.entity, 'data.'+descPath);
-            let notes = getProperty(this.entity, 'data.flags.entity-notes-extended.notes');
-
-            if (notes === undefined) notes = '';
-            if (description === undefined) description = '';
-
-            let obj = {};
-            obj[descPath] = '';
-            obj['flags.entity-notes-extended.notes'] = notes + description;
-
-            await this.entity.update(obj);
-            this.render();
-        }
-    }
-
-    async _moveToDescription() {
-        if (game.dnd5e) {
-            let descPath = '';
-            switch (this.entity.constructor.name) {
-                case 'Actor5e': descPath = 'data.details.biography.value'; break;
-                case 'Item5e': descPath = 'data.description.value'; break;
-                case 'JournalEntry': descPath = 'content'; break;
-            }
-            let description = getProperty(this.entity, 'data.' + descPath);
-            let notes = getProperty(this.entity, 'data.flags.entity-notes-extended.notes');
-
-            if (notes === undefined) notes = '';
-            if (description === undefined) description = '';
-
-            let obj = {};
-            obj[descPath] = description + notes;
-            obj['flags.entity-notes-extended.notes'] = '';
-
-            await this.entity.update(obj);
-            this.render();
-        }
+            if (!noteApp) noteApp = new PrivilegedNote(app.entity, { submitOnClose: true, closeOnSubmit: false, submitOnUnfocus: true });
+            noteApp.render(true);
+        });
+        html.closest('.app').find('.open-entity-notes').remove();
+        let titleElement = html.closest('.app').find('.window-title');
+        openBtn.insertAfter(titleElement);
+        //}
     }
 }
+
 Hooks.on('init', () => {
     game.settings.register("entity-notes-extended", 'showLabel', {
         name: game.i18n.localize('PrivilegedNote.setting'),
